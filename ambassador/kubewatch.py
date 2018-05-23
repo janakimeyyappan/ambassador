@@ -21,15 +21,28 @@ from ambassador.VERSION import Version
 
 __version__ = Version
 
-logging.basicConfig(
-    level=logging.INFO, # if appDebug else logging.INFO,
-    format="%%(asctime)s kubewatch %s %%(levelname)s: %%(message)s" % __version__,
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+logFormatter = logging.Formatter("%%(asctime)s kubewatch %s %%(levelname)s: %%(message)s" % __version__,
+                                 datefmt="%Y-%m-%d %H:%M:%S")
+rootLogger = logging.getLogger()
+
+fileHandler = logging.FileHandler("kubewatch.log")
+fileHandler.setFormatter(logFormatter)
+rootLogger.addHandler(fileHandler)
+
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(logFormatter)
+rootLogger.addHandler(consoleHandler)
+# rootLogger.setLevel(logging.DEBUG)
+
+# logging.basicConfig(
+#     level=logging.INFO, # if appDebug else logging.INFO,
+#     format="%%(asctime)s kubewatch %s %%(levelname)s: %%(message)s" % __version__,
+#     datefmt="%Y-%m-%d %H:%M:%S"
+# )
 
 # logging.getLogger("datawire.scout").setLevel(logging.DEBUG)
 logger = logging.getLogger("kubewatch")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 KEY = "getambassador.io/config"
 
@@ -369,8 +382,9 @@ def sync(restarter):
             for svc in svc_list.items:
                 restarter.update_from_service(svc)
 
-    logger.debug("Changes detected, regenerating envoy config.")
-    restarter.restart()
+    if restarter.changes():
+        logger.debug("Changes detected, regenerating envoy config.")
+        restarter.restart()
 
 def watch_loop(restarter):
     v1 = kube_v1()
@@ -385,18 +399,19 @@ def watch_loop(restarter):
 
         for evt in watched:
             logger.debug("Event: %s %s/%s" % 
-                         (evt["type"], 
-                          evt["object"].metadata.namespace, evt["object"].metadata.name))
+                        (evt["type"], 
+                        evt["object"].metadata.namespace, evt["object"].metadata.name))
             sys.stdout.flush()
 
             if evt["type"] == "DELETED":
                 restarter.delete(evt["object"])
             else:
                 restarter.update_from_service(evt["object"])
+
+        logger.info("watch loop exited?")
     else:
         logger.info("No K8s, idling")
-        while True:
-            time.sleep(60)
+        time.sleep(600)
 
 @click.command()
 @click.argument("mode", type=click.Choice(["sync", "watch"]))
@@ -481,11 +496,12 @@ def main(mode, ambassador_config_dir, envoy_config_file, delay, pid):
             try:
                 # this is in a loop because sometimes the auth expires
                 # or the connection dies
+                logger.debug("starting watch loop")
                 watch_loop(restarter)
             except KeyboardInterrupt:
                 raise
             except:
-                logging.exception("could not watch for Kubernetes service changes")
+                logger.exception("could not watch for Kubernetes service changes")
     else:
          raise ValueError(mode)
 
