@@ -81,20 +81,6 @@
                     ,
                     
                     {
-                      "timeout_ms": 3000,"prefix": "/ambassador/v0/","prefix_rewrite": "/ambassador/v0/",
-                        "weighted_clusters": {
-                            "clusters": [
-                                
-                                  { "name": "cluster_127_0_0_1_8877", "weight": 100.0 }
-                                
-                            ]
-                        }
-
-                      
-                    }
-                    ,
-                    
-                    {
                       "timeout_ms": 3000,"prefix": "/qotm/quote/","prefix_rewrite": "/quote/",
                         "weighted_clusters": {
                             "clusters": [
@@ -141,7 +127,7 @@
                             ]
                         },
                         "shadow": {
-                          "cluster": "cluster_shadow_https___myservice_org__otls"
+                          "cluster": "cluster_shadow_https___myservice_org__otls_hr_httpbin_org"
                         }
 
                       
@@ -167,7 +153,7 @@
                         "weighted_clusters": {
                             "clusters": [
                                 
-                                  { "name": "cluster_https___google_com_otls", "weight": 100.0 }
+                                  { "name": "cluster_https___google_com_otls_hr_google_com", "weight": 100.0 }
                                 
                             ]
                         }
@@ -409,7 +395,7 @@
           
         ]},
       {
-        "name": "cluster_https___google_com_otls",
+        "name": "cluster_https___google_com_otls_hr_google_com",
         "connect_timeout_ms": 3000,
         "type": "strict_dns",
         "lb_type": "round_robin",        
@@ -420,6 +406,8 @@
           
         ],
         "ssl_context": {
+          
+          "sni": "google.com"
           
         }},
       {
@@ -573,7 +561,7 @@
           
         ]},
       {
-        "name": "cluster_shadow_https___myservice_org__otls",
+        "name": "cluster_shadow_https___myservice_org__otls_hr_httpbin_org",
         "connect_timeout_ms": 3000,
         "type": "strict_dns",
         "lb_type": "round_robin",        
@@ -584,6 +572,8 @@
           
         ],
         "ssl_context": {
+          
+          "sni": "httpbin.org"
           
         }},
       {

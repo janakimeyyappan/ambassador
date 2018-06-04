@@ -87,7 +87,7 @@
                 <div class="dropdown">
                     <button class="dropbtn">▾ Need Help?</button>
                     <div class="dropdown-content">
-                        <a target="_blank" href="https://gitter.im/datawire/ambassador">Community Gitter</a>
+                        <a target="_blank" href="https://join.slack.com/t/datawire-oss/shared_invite/enQtMzcwMDEwMTc5ODQ3LTE1NmIzZTFmZWE0OTQ1NDc2MzE2NTkzMDAzZWM0MDIxZTVjOGIxYmRjZjY3N2M2Mjk4NGI5Y2Q4NGY4Njc1Yjg">Community Slack</a>
                         <a target="_blank" href="https://www.datawire.io/pricing">Enterprise Support</a>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                 <strong>TLS Termination</strong>
                 <p>Use your own SSL certificate</p>
             </a>
-            <a href="/user-guide/rate-limiting-tutorial" class="card">
+            <a href="/reference/services/rate-limit-service" class="card">
                 <div class="icon">
                     <img src="/images/features-icons/rate-limiting.svg" />
                 </div>
@@ -178,13 +178,13 @@
             <p class="font-light text-uppercase text-md">Ambassador gives your Kubernetes service owners fine-<br>grained control over their ingress.</p>
         </div>
         <div class="cards">
-            <div class="card">
+            <a href="/reference/cors" class="card">
                 <div class="icon">
                     <img src="/images/features-icons/cors.svg" />
                 </div>
                 <strong>CORS</strong>
                 <p>Enable Cross-Origin Resource Sharing for given service URLs</p>
-            </div>
+            </a>
             <a href="/reference/canary" class="card">
                 <div class="icon">
                     <img src="/images/features-icons/canary-release.svg" />
@@ -199,13 +199,13 @@
                 <strong>Timeouts</strong>
                 <p>Add request timeouts to service API calls</p>
             </div>
-            <div class="card">
+            <a href="/reference/add_request_headers" class="card">
                 <div class="icon">
                     <img src="/images/features-icons/request-transformers.svg" />
                 </div>
                 <strong>Request Transformers</strong>
                 <p>Add a dictionary of HTTP headers that can be added to each request to your service</p>
-            </div>
+            </a>
             <div class="card">
                 <div class="icon">
                     <img src="/images/features-icons/regex-routing.svg" />
@@ -220,6 +220,13 @@
                 <strong>Method-based routing</strong>
                 <p>Route based on your HTTP method (e.g., GET, PUT)</p>
             </div>
+            <a href="/reference/headers" class="card">
+                <div class="icon">
+                    <img src="/images/features-icons/regex-routing.svg" />
+                </div>
+                <strong>Header-based routing</strong>
+                <p>Route based on specific HTTP headers</p>
+            </a>
             <div class="card">
                 <div class="icon">
                     <img src="/images/features-icons/url-rewrite.svg" />
