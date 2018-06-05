@@ -300,9 +300,10 @@ def save_cert(cert, key, dir):
         os.makedirs(dir)
     except FileExistsError:
         pass
-
-    open(os.path.join(dir, "tls.crt"), "w").write(cert.decode("utf-8"))
-    open(os.path.join(dir, "tls.key"), "w").write(key.decode("utf-8"))
+    if cert:
+      open(os.path.join(dir, "tls.crt"), "w").write(cert.decode("utf-8"))
+    if key:
+      open(os.path.join(dir, "tls.key"), "w").write(key.decode("utf-8"))
 
 def sync(restarter):
     v1 = kube_v1()
@@ -347,7 +348,7 @@ def sync(restarter):
                 if client_cert:
                     tls_mod['config']['client'] = {
                         "enabled": True,
-                        "cacert_chain_file": "/etc/cacert/tls.pem"
+                        "cacert_chain_file": "/etc/cacert/tls.crt"
                     }
 
                     if client_data.get('cert_required', None):
